@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "lint": "eslint src --ext .js"
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +19,6 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "eslint": "^8.30.0",
-    "eslint-config-google": "^0.14.0",
     "nodemon": "^2.0.20"
   }
 }
