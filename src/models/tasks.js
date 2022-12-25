@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const task = mongoose.model('tasks',{
+const Task = mongoose.model('Task',{
     task:{
         type: String,
         required: true,
@@ -9,7 +9,12 @@ const task = mongoose.model('tasks',{
     done:{
         type: Boolean,
         required: true
+    },
+    userId:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
     }
 })
 
-module.exports = task
+module.exports = Task
