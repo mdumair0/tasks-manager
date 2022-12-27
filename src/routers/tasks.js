@@ -19,24 +19,23 @@ router.post('/task', auth, async (req, res) => {
 // GET /tasks?limit=3&skip=2
 router.get('/tasks', auth, async (req, res) => {
   try {
-    const sort = {}
+    const sort = {};
     if (req.query.done) {
-      obj = {userId: req.user._id, done: req.query.done}
+      obj = {userId: req.user._id, done: req.query.done};
     } else {
-      obj = {userId: req.user._id}
+      obj = {userId: req.user._id};
     };
 
     if (req.query.sortBy) {
-      const part = req.query.sortBy.split(':')
-      sort[part[0]] = part[1] === 'desc' ? -1 : 1
-    }
-    else console.log('sort, req.query.sortBy')
+      const part = req.query.sortBy.split(':');
+      sort[part[0]] = part[1] === 'desc' ? -1 : 1;
+    } else console.log('sort, req.query.sortBy');
 
     const tasks = await Task.find(obj)
-      .skip(Number(req.query.skip) || 0)
-      .limit(Number(req.query.limit) || 0)
-      .sort(sort)
-      
+        .skip(Number(req.query.skip) || 0)
+        .limit(Number(req.query.limit) || 0)
+        .sort(sort);
+
     if (tasks.length === 0) {
       return res.status(404).send({Error: 'Task not found'});
     }
