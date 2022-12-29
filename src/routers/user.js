@@ -3,7 +3,7 @@ const User = require('../models/user');
 const auth = require('../middleware/auth');
 const multer = require('multer');
 const sharp = require('sharp');
-const { sendWelcomeEmail, sendExitEmail } = require('../emails/account');
+const {sendWelcomeEmail, sendExitEmail} = require('../emails/account');
 
 const router = new express.Router();
 
@@ -15,7 +15,7 @@ router.post('/users', async (req, res) => {
   const user = new User(req.body);
   try {
     const token = await user.generateAuthToken();
-    sendWelcomeEmail(user.email, user.name)
+    sendWelcomeEmail(user.email, user.name);
     await user.save();
     res.status(201).send({user, token});
   } catch (e) {
@@ -24,8 +24,9 @@ router.post('/users', async (req, res) => {
 });
 
 router.post('/users/login', async (req, res) => {
+  const {email, password} = req.body;
   try {
-    const user = await User.findByCredentials(req.body.email, req.body.password);
+    const user = await User.findByCredentials(email, password);
     const token = await user.generateAuthToken();
     res.send({user, token});
   } catch (Error) {
@@ -75,7 +76,7 @@ router.patch('/users/me', auth, async (req, res) => {
 router.delete('/users/me', auth, async (req, res) => {
   try {
     await req.user.remove();
-    sendExitEmail(req.user.email, req.user.name)
+    sendExitEmail(req.user.email, req.user.name);
     res.send( req.user );
   } catch (e) {
     res.status(500).send(e);
@@ -94,14 +95,20 @@ const upload = multer({
   },
 });
 
-router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
-  const buffer = await sharp(req.file.buffer).resize({width: 250, height:250}).png().toBuffer()
-  req.user.avatar = buffer;
-  await req.user.save();
-  res.send({Success: 'Avatar Upload Success'});
-}, (error, req, res, next) => {
-  res.status(400).send({error: error.message});
-});
+router.post('/users/me/avatar',
+    auth,
+    upload.single('avatar'), async (req, res) => {
+      const buffer = await sharp(req.file.buffer)
+          .resize({width: 250, height: 250})
+          .png()
+          .toBuffer();
+      req.user.avatar = buffer;
+      await req.user.save();
+      res.send({Success: 'Avatar Upload Success'});
+    }, (error, req, res, next) => {
+      res.status(400).send({error: error.message});
+    },
+);
 
 router.delete('/users/me/avatar', auth, async (req, res) => {
   req.user.avatar = undefined;

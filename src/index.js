@@ -6,11 +6,11 @@ const taskRouter = require('./routers/tasks');
 const app = express();
 const port = process.env.PORT;
 
-const cors=require("cors");
+const cors=require('cors');
 const corsOptions ={
-   origin:'*', 
-   credentials:true,
-   optionSuccessStatus:200,
+  origin: '*',
+  credentials: true,
+  optionSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
