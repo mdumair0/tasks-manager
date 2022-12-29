@@ -1,5 +1,5 @@
-const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendWelcomeEmail = (email, name) => {
   console.log( email );
@@ -7,14 +7,13 @@ const sendWelcomeEmail = (email, name) => {
     to: email,
     from: 'farzi9002@gmail.com',
     subject: 'Thanks For Joining in !!',
-    text: `Welcome to the App ${name}.`
+    text: `Welcome to the App ${name}.`,
   }).then(() => {
-    console.log('Email sent')
-  })
-  .catch((error) => {
-    console.error(error)
-  })
-}
+    console.log('Email sent');
+  }).catch((error) => {
+    console.error(error);
+  });
+};
 
 const sendExitEmail = (email, name) => {
   console.log( email );
@@ -22,13 +21,12 @@ const sendExitEmail = (email, name) => {
     to: email,
     from: 'farzi9002@gmail.com',
     subject: 'Bye and thank you For giving us your time !!',
-    text: `Sorry to see you go ${name}.`
+    text: `Sorry to see you go ${name}.`,
   }).then(() => {
-    console.log('Email sent')
-  })
-  .catch((error) => {
-    console.error(error)
-  })
-}
+    console.log('Email sent');
+  }).catch((error) => {
+    console.error(error);
+  });
+};
 
-module.exports = { sendWelcomeEmail, sendExitEmail }
+module.exports = {sendWelcomeEmail, sendExitEmail};

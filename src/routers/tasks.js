@@ -29,7 +29,7 @@ router.get('/tasks', auth, async (req, res) => {
     if (req.query.sortBy) {
       const part = req.query.sortBy.split(':');
       sort[part[0]] = part[1] === 'desc' ? -1 : 1;
-    } else console.log('sort, req.query.sortBy');
+    }
 
     const tasks = await Task.find(obj)
         .skip(Number(req.query.skip) || 0)
