@@ -3,7 +3,7 @@ const Task = require('../models/tasks');
 const auth = require('../middleware/auth');
 const router = new express.Router();
 
-// Create Task
+// Create a Task
 router.post('/task', auth, async (req, res) => {
   const task = new Task({...req.body, userId: req.user._id});
   try {
@@ -14,7 +14,7 @@ router.post('/task', auth, async (req, res) => {
   }
 });
 
-// Retrieve Tasks
+// Retrieve All Tasks
 // GET /tasks?done=true
 // GET /tasks?limit=3&skip=2
 router.get('/tasks', auth, async (req, res) => {
