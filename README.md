@@ -8,7 +8,7 @@ You can either Integrate the backend API's to your front-end or clone this repo 
 
 ## Use Locally
 
-To use locally you first need to install required dependencies. run `npm install`
+To use locally you first need to install required dependencies. Run `npm install`
 To run you'll need to use thi command `npm run dev`
 To use or test locally you can use postman, import postman-collection and that's it !!!
 
