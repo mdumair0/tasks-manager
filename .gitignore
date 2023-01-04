@@ -3,7 +3,7 @@ prac_async.js
 prac_promise_2.js
 prac_promise.js
 package-lock.json
-.env
+
 test.env
 src/math.js
 tests
