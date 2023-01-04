@@ -6,6 +6,12 @@ Welcome to the Task Manager!. This is backend API based project, where users can
 
 You can either Integrate the backend API's to your front-end or clone this repo and use it locally.
 
+## Use Locally
+
+To use locally you first need to install required dependencies. run `npm install`
+To run you'll need to use thi command `npm run dev`
+To use or test locally you can use postman, import postman-collection and that's it !!!
+
 ## Integrate The API's to your Front-end app
 
 This app provides several functionality which can be accessed using this [URL](https://task-manager-nh7n.onrender.com)
@@ -16,10 +22,10 @@ For user creation use `https://task-manager-nh7n.onrender.com/users` following s
 
 ```json
 {
-    "name": '',
-    "email": '',
-    "age": '',
-    "password": ''
+    "name": "String",
+    "email": "String",
+    "age": "Number",
+    "password": "String"
 }
 ```
 
@@ -31,8 +37,8 @@ For Logging In user use `https://task-manager-nh7n.onrender.com/users/login` fol
 
 ```json
 {
-    "email": '',
-    "password": ''
+    "task": "String",
+    "done": "Boolean"
 }
 ```
 
@@ -64,8 +70,8 @@ For Task creation use `https://task-manager-nh7n.onrender.com/task` following sc
 
 ```json
 {
-    "task": String,
-    "done": Boolean
+    "task": "String",
+    "done": "Boolean"
 }
 ```
 
@@ -77,3 +83,14 @@ Which will send task with other information like timestamp and task Id as `_id`,
 ### Delete Tasks
 
 You can delete tasks by `_id` that you've got while retrieving all tasks then you can use following URL for deletion `https://task-manager-nh7n.onrender.com/tasks/:id`.
+
+### Update Tasks
+
+You can update tasks by `_id` that you've got while retrieving all tasks then you can use following URL for updating the task `https://task-manager-nh7n.onrender.com/task/:id`.
+
+```json
+{
+    "task": "String",
+    "done": "Boolean"
+}
+```
