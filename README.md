@@ -1,7 +1,5 @@
 # Task Manager
 
-http://ps3xploit.me/hen/installer/index.html
-
 Welcome to the Task Manager!. This is backend API based project, where users can create, retrieve, update and delete tasks and thier status.
 
 ## Get Started
