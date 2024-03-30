@@ -46,7 +46,7 @@ router.get('/tasks', auth, async (req, res) => {
 });
 
 // Retrieve One Task By Id
-router.get('/tasks/:id', auth, async (req, res) => {
+router.get('/task/:id', auth, async (req, res) => {
   try {
     const task = await Task.findOne({
       _id: req.params.id,
@@ -79,7 +79,7 @@ router.patch('/task/:id', auth, async (req, res) => {
 });
 
 // Delete Task
-router.delete('/tasks/:id', auth, async (req, res) => {
+router.delete('/task/:id', auth, async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({_id: req.params.id, userId: req.user._id});
     if (!task) return res.status(404).send('No task found');

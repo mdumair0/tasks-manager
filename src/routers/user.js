@@ -7,16 +7,21 @@ const {sendWelcomeEmail, sendExitEmail} = require('../emails/account');
 
 const router = new express.Router();
 
-router.get('/users/me', auth, async (req, res) => {
+router.get('/user/me', auth, async (req, res) => {
   res.send( req.user );
 });
 
+// Get all users
+router.get('/users', async (req, res) => {
+  const user = await User.find()
+  res.send( user );
+});
+
 // Create User
-router.post('/users', async (req, res) => {
+router.post('/user', async (req, res) => {
   const user = new User(req.body);
   try {
     const token = await user.generateAuthToken();
-    sendWelcomeEmail(user.email, user.name);
     await user.save();
     res.status(201).send({user, token});
   } catch (e) {
@@ -25,7 +30,7 @@ router.post('/users', async (req, res) => {
 });
 
 // Login User
-router.post('/users/login', async (req, res) => {
+router.post('/user/login', async (req, res) => {
   const {email, password} = req.body;
   try {
     const user = await User.findByCredentials(email, password);
@@ -37,7 +42,7 @@ router.post('/users/login', async (req, res) => {
 });
 
 // Logout User
-router.post('/users/logout', auth, async (req, res) => {
+router.post('/user/logout', auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;
@@ -51,7 +56,7 @@ router.post('/users/logout', auth, async (req, res) => {
 });
 
 // Logout user from all devices
-router.post('/users/logoutAll', auth, async (req, res) => {
+router.post('/user/logoutAll', auth, async (req, res) => {
   try {
     req.user.tokens = [];
 
@@ -63,7 +68,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 });
 
 // Update User info
-router.patch('/users/me', auth, async (req, res) => {
+router.patch('/user/me', auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowed = ['name', 'email', 'password', 'age'];
   const isValidOp = updates.every((update) => allowed.includes( update ));
@@ -79,10 +84,9 @@ router.patch('/users/me', auth, async (req, res) => {
 });
 
 // Delete the logged in user
-router.delete('/users/me', auth, async (req, res) => {
+router.delete('/user/me', auth, async (req, res) => {
   try {
     await req.user.remove();
-    sendExitEmail(req.user.email, req.user.name);
     res.send( req.user );
   } catch (e) {
     res.status(500).send(e);
@@ -102,7 +106,7 @@ const upload = multer({
 });
 
 // Upload image using multer
-router.post('/users/me/avatar',
+router.post('/user/me/avatar',
     auth,
     upload.single('avatar'), async (req, res) => {
       const buffer = await sharp(req.file.buffer)
@@ -118,10 +122,14 @@ router.post('/users/me/avatar',
 );
 
 // Delete user Image
-router.delete('/users/me/avatar', auth, async (req, res) => {
-  req.user.avatar = undefined;
-  await req.user.save();
-  res.send({Success: 'Avatar Delete Success'});
+router.delete('/user/me/avatar', auth, async (req, res) => {
+  if (!!req.user.avatar) {
+    req.user.avatar = undefined;
+    await req.user.save();
+    res.send({Success: 'Avatar Delete Success'});
+  } else {
+    res.status(404).send({Success: 'Avatar Not Found'});
+  }
 }, (error, req, res, next) => {
   res.status(400).send({error: error.message});
 });
