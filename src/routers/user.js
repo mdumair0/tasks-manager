@@ -14,6 +14,9 @@ router.get('/user/me', auth, async (req, res) => {
 // Get all users
 router.get('/users', async (req, res) => {
   const user = await User.find()
+  if (user && user.length === 0) {
+    return res.status(404).send( {Error: "No Users Found"} );
+  }
   res.send( user );
 });
 
@@ -32,6 +35,12 @@ router.post('/user', async (req, res) => {
 // Login User
 router.post('/user/login', async (req, res) => {
   const {email, password} = req.body;
+  if (!email || !password) {
+    return res.status(400).send({
+      "error": "Bad Request",
+      "message": `${!email && !password ? 'Email and password are' : !password ? 'password is': 'email is'} required.`
+    })
+  }
   try {
     const user = await User.findByCredentials(email, password);
     const token = await user.generateAuthToken();
